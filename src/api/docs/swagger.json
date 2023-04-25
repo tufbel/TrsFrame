@@ -1,0 +1,54 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "TrsFrame RESTful API",
+        "title": "TrsFrame",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:22887",
+    "basePath": "/api/trsframe",
+    "paths": {
+        "/": {
+            "get": {
+                "description": "验活接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "index"
+                ],
+                "summary": "home",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.HomeResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "types.HomeResp": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        }
+    }
+}

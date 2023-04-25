@@ -1,0 +1,36 @@
+basePath: /api/trsframe
+definitions:
+  types.HomeResp:
+    properties:
+      message:
+        example: success
+        type: string
+    type: object
+host: localhost:22887
+info:
+  contact: {}
+  description: TrsFrame RESTful API
+  title: TrsFrame
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: 验活接口
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.HomeResp'
+        "400":
+          description: Bad Request
+      summary: home
+      tags:
+      - index
+schemes:
+- http
+- https
+swagger: "2.0"
