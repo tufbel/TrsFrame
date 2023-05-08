@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "./user_pb";
+
+message UserNameReq {
+  string name = 1;
+}
+
+message UserNameResp {
+  string name = 1;
+}
+
+service User {
+  rpc UserName(UserNameResp) returns (UserNameReq);
+}

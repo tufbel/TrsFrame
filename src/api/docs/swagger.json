@@ -8,7 +8,7 @@
         "description": "TrsFrame RESTful API",
         "title": "TrsFrame",
         "contact": {},
-        "version": "1.0"
+        "version": "1.0.0"
     },
     "host": "localhost:22887",
     "basePath": "/api/trsframe",
@@ -25,12 +25,12 @@
                 "tags": [
                     "index"
                 ],
-                "summary": "home",
+                "summary": "index",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/types.HomeResp"
+                            "$ref": "#/definitions/index.HomeResp"
                         }
                     },
                     "400": {
@@ -41,10 +41,11 @@
         }
     },
     "definitions": {
-        "types.HomeResp": {
+        "index.HomeResp": {
             "type": "object",
             "properties": {
                 "message": {
+                    "description": "验活接口响应消息",
                     "type": "string",
                     "example": "success"
                 }

@@ -13,7 +13,7 @@ var (
 func InitLogger() {
 	zapConfig := zap.Config{
 		Level:             zap.NewAtomicLevelAt(zap.DebugLevel),
-		Development:       false,
+		Development:       true,
 		DisableStacktrace: true,
 		Sampling: &zap.SamplingConfig{
 			Initial:    100,
@@ -36,7 +36,7 @@ func InitLogger() {
 		OutputPaths:      []string{"stdout"},
 		ErrorOutputPaths: []string{"stdout"},
 	}
-	Logger, _ = zapConfig.Build(zap.AddCallerSkip(3))
+	Logger, _ = zapConfig.Build(zap.AddCallerSkip(1))
 	Logger.Info("Logger init success")
 }
 

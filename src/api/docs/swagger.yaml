@@ -1,8 +1,9 @@
 basePath: /api/trsframe
 definitions:
-  types.HomeResp:
+  index.HomeResp:
     properties:
       message:
+        description: 验活接口响应消息
         example: success
         type: string
     type: object
@@ -11,7 +12,7 @@ info:
   contact: {}
   description: TrsFrame RESTful API
   title: TrsFrame
-  version: "1.0"
+  version: 1.0.0
 paths:
   /:
     get:
@@ -24,10 +25,10 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/types.HomeResp'
+            $ref: '#/definitions/index.HomeResp'
         "400":
           description: Bad Request
-      summary: home
+      summary: index
       tags:
       - index
 schemes:

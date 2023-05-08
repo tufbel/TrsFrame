@@ -1,0 +1,9 @@
+# go语言使用Viper读取配置文件
+[tool]
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.0.0"
+tag_format = "$version"
+use_shortcuts = true
+update_changelog_on_bump = true
+annotated_tag = true

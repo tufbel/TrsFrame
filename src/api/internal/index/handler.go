@@ -1,31 +1,30 @@
-// Package home
-// Title       : home.go
+// Package index
+// Title       : index.go
 // Author      : Tuffy  2023/4/4 16:08
 // Description :
-package home
+package index
 
 import (
-	"TrsFrame/src/api/internal/config"
-	"TrsFrame/src/api/internal/types"
+	"TrsFrame/src/api/config"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 // Home
-// @Summary      home
+// @Summary      index
 // @Description  验活接口
 // @Tags         index
 // @Accept       json
 // @Produce      json
-// @Success      200  {object} types.HomeResp
+// @Success      200  {object} HomeResp
 // @Failure      400
 // @Router       / [get]
 func Home(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, &types.HomeResp{
+	ctx.JSON(http.StatusOK, &HomeResp{
 		Message: "success",
 	})
 }
 
-func InitHomeGroup(group *gin.RouterGroup, config *config.ApiConfig) {
+func InitIndexGroup(group *gin.RouterGroup, config *config.ApiConfig) {
 	group.GET("", Home)
 }

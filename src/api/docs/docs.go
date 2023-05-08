@@ -27,12 +27,12 @@ const docTemplate = `{
                 "tags": [
                     "index"
                 ],
-                "summary": "home",
+                "summary": "index",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/types.HomeResp"
+                            "$ref": "#/definitions/index.HomeResp"
                         }
                     },
                     "400": {
@@ -43,10 +43,11 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "types.HomeResp": {
+        "index.HomeResp": {
             "type": "object",
             "properties": {
                 "message": {
+                    "description": "验活接口响应消息",
                     "type": "string",
                     "example": "success"
                 }
@@ -57,7 +58,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
+	Version:          "1.0.0",
 	Host:             "localhost:22887",
 	BasePath:         "/api/trsframe",
 	Schemes:          []string{"http", "https"},

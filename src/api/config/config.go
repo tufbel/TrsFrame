@@ -5,6 +5,7 @@
 package config
 
 type ApiConfig struct {
+	WorkDir       string `json:"work_dir"`
 	RootURL       string `json:"root_url"`
 	ListeningHost string `json:"listen_host"`
 	ListeningPort int    `json:"listen_port"`
