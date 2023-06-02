@@ -101,3 +101,8 @@ fabric.properties
 # Go workspace file
 go.work
 
+build
+code_test
+deb/*.deb
+deb/project/opt/cowave/rcu_client
+

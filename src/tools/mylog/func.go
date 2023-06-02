@@ -41,3 +41,7 @@ func Panic(msg string, fields ...Field) {
 func Fatal(msg string, fields ...Field) {
 	Logger.Fatal(msg, fields...)
 }
+
+func Printf(msg string, fields ...Field) {
+	Logger.Info(msg, fields...)
+}

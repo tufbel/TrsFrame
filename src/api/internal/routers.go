@@ -1,4 +1,4 @@
-// Package handler
+// Package internal
 // Title       : routers.go
 // Author      : Tuffy  2023/4/4 15:56
 // Description :

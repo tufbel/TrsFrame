@@ -7,3 +7,7 @@ tag_format = "$version"
 use_shortcuts = true
 update_changelog_on_bump = true
 annotated_tag = true
+
+[myproject]
+listening_host = "0.0.0.0"
+listening_port = 8008

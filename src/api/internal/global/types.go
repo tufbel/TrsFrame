@@ -3,3 +3,7 @@
 // Author      : Tuffy  2023/5/8 14:15
 // Description :
 package global
+
+type BadRequestResp struct {
+	Detail string `json:"detail"`
+}

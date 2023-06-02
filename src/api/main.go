@@ -1,3 +1,7 @@
+// Package api
+// Title       : main.go
+// Author      : Tuffy  2023/5/5 14:33
+// Description :
 package main
 
 import (
@@ -8,6 +12,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"net/http"
 	"os"
 	"os/signal"
@@ -15,26 +20,55 @@ import (
 	"time"
 )
 
-// @title           TrsFrame
-// @version         1.0.0
-// @description     TrsFrame RESTful API
+//	@title			TrsFrame
+//	@version		1.0.0
+//	@description	TrsFrame RESTful API
 
-// @host      localhost:22887
-// @BasePath  /api/trsframe
+//	@host		localhost:22887
+//	@BasePath	/api/trsframe
 
-// @schemes http https
+// @schemes	http https
 func main() {
-	workdir, err := os.Getwd()
-	if err != nil {
-		mylog.Error(fmt.Sprintf("Failed to get working directory:", err))
-		os.Exit(1)
+	var workdir string
+	{
+		// 确定工作目录
+		exePath, err := os.Executable()
+		if err != nil {
+			mylog.Error(fmt.Sprintf("Failed to get working directory: %v", err))
+			panic(err)
+		}
+		workdir = filepath.Dir(exePath)
+		if filepath.Base(workdir) == "build" {
+			workdir = filepath.Dir(workdir)
+		}
+		if err := os.Chdir(workdir); err != nil {
+			mylog.Error(fmt.Sprintf("Failed to switch the working to %s: %v", workdir, err))
+			panic(err)
+		}
+
+		mylog.Info(fmt.Sprintf("Working directory: %s", workdir))
+	}
+
+	viperConfig := viper.New()
+	{
+		//	读取项目配置
+		viperConfig.SetConfigName("projectConfig")
+		viperConfig.SetConfigFile(filepath.Join(workdir, "pyproject.toml"))
+		viperConfig.SetConfigType("toml")
+		if err := viperConfig.ReadInConfig(); err != nil {
+			mylog.Error(fmt.Sprintf("Failed to read pyproject.toml: %v", err))
+			panic(err)
+		}
 	}
 
 	apiConfig := &config.ApiConfig{
 		WorkDir:       workdir,
-		RootURL:       "/api/rcu_client",
-		ListeningHost: "localhost",
-		ListeningPort: 22887,
+		RootURL:       "/api/trsframe",
+		ListeningHost: viperConfig.GetString("myproject.listening_host"),
+		ListeningPort: viperConfig.GetInt("myproject.listening_port"),
+	}
+	if apiConfig.ListeningPort == 0 {
+		panic("listening_port is not set in pyproject.toml")
 	}
 
 	//gin.SetMode(gin.ReleaseMode)
@@ -45,28 +79,17 @@ func main() {
 
 	internal.InitRouter(webRouter, apiConfig)
 
-	// 添加swagger文档
+	// 添加OpenAPI文档文档
 	{
-		// gin-swagger文档
-		//gDocs.SwaggerInfo.Version = "1.0.0"
-		//webRouter.GET(apiConfig.RootURL+"/docs/*any", gSwag.WrapHandler(swagFiles.Handler))
-		//docsIndexFunc := func(ctx *gin.Context) { ctx.Redirect(301, apiConfig.RootURL+"/docs/index.html") }
-		//webRouter.GET(apiConfig.RootURL+"/docs", docsIndexFunc)
-		//webRouter.GET("/docs", docsIndexFunc)
-		//mylog.Debug(fmt.Sprintf(
-		//	"Docs: http://localhost:%d%s/docs/index.html",
-		//	apiConfig.ListeningPort,
-		//	apiConfig.RootURL,
-		//))
-
-		// fast-swagger文档
-		fastSwagger := &docs.FastSwagger{
-			BaseURL:     apiConfig.RootURL,
-			SwaggerPath: filepath.Join(apiConfig.WorkDir, "src/api/docs/swagger.json"),
-			OpenapiPath: filepath.Join(apiConfig.WorkDir, "src/api/docs/openapi.json"),
+		fastOpenAPI := &docs.FastOpenAPI{
+			Title:           "TrsFrame",
+			BaseURL:         apiConfig.RootURL,
+			ApiDir:          filepath.Join(apiConfig.WorkDir, "src/api"),
+			SwaggerFileName: "swagger.json",
+			OpenapiFileName: "openapi.json",
 		}
-		fastSwagger.BuildOpenapi()
-		fastSwagger.AddDocs(webRouter)
+		go fastOpenAPI.BuildOpenapi()
+		fastOpenAPI.AddDocs(webRouter)
 		mylog.Debug(fmt.Sprintf(
 			"Docs: http://localhost:%d%s/docs",
 			apiConfig.ListeningPort,
@@ -81,7 +104,6 @@ func main() {
 		}
 
 		// startup
-
 		go func() {
 			// Listen and Server
 			if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
@@ -107,4 +129,5 @@ func main() {
 		}
 		mylog.Info("Server exiting")
 	}
+
 }
